@@ -1,0 +1,28 @@
+
+function catlistwithsub(){
+	
+	 // Get top level categories and list them
+    $args = array('orderby' => 'name', 'parent' => 0, 'taxonomy' => 'pro-categories', 'depht'=>1, 'hierarchical'=>1);
+    $categories = get_categories( $args );
+
+    foreach ($categories as $category) {
+
+    echo ' <a class="archivelistcat" href="'.get_option('home').'/pro-categories/'.$category->slug.'">' .$category->cat_name . '</a><br>';
+	//echo $category->cat_ID;
+    $args2 = array('taxonomy' => 'pro-categories', 'orderby' => 'name', 'parent' => $category->cat_ID );
+    $subcategories = get_categories( $args2 );
+	
+    echo '<ul>';
+	//print_r($subcategories);
+    // While listing top level categories
+    // list their child categories
+    foreach ($subcategories as $subcategory) {
+        echo '<li class="archivelistcat"> <a href="'.get_option('home').'/pro-categories/'.$subcategory->slug.'">' . $subcategory->cat_name . ' </a> </li>';
+    }
+
+    echo '</ul>';
+
+    }
+}
+
+add_shortcode('sublistcat','catlistwithsub');
